@@ -2,8 +2,11 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
-
-const Details: React.FC = () => {
+interface DetailsProps {
+  setReload: React.Dispatch<React.SetStateAction<boolean>>;
+  reload: boolean;
+}
+const Details: React.FC<DetailsProps> = ({ setReload, reload }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [userData, setUserData] = useState({
     fullName: "Robert Fox",
@@ -25,28 +28,27 @@ const Details: React.FC = () => {
     const storedSubscriptionData = localStorage.getItem("subscriptionData");
     if (storedSubscriptionData) {
       const parsedData = JSON.parse(storedSubscriptionData);
+      const startDate = new Date(parsedData[parsedData.length - 1].date);
+      const nextBillingDate = new Date(startDate);
+      nextBillingDate.setMonth(startDate.getMonth() + 1);
 
       setSubscriptionData({
-        plan: `${parsedData[parsedData.length - 1].packageName} Plan`,
-        started: new Date(
-          parsedData[parsedData.length - 1].date
-        ).toLocaleDateString("en-US", {
+        plan: ` ${parsedData[parsedData.length - 1].packageName} Plan`,
+        started: startDate.toLocaleDateString("en-US", {
           year: "numeric",
           month: "short",
           day: "2-digit",
         }),
         nextBilling: `${
           parsedData[parsedData.length - 1].priceAmount
-        } on ${new Date(
-          parsedData[parsedData.length - 1].date
-        ).toLocaleDateString("en-US", {
+        } on ${nextBillingDate.toLocaleDateString("en-US", {
           year: "numeric",
           month: "short",
           day: "2-digit",
         })}`,
       });
     }
-  }, [[], subscriptionData]);
+  }, [[], reload]);
 
   console.log(subscriptionData);
 

@@ -8,7 +8,10 @@ interface BillingItem {
   description: string;
 }
 
-const BillingHistory: React.FC = () => {
+interface BillingHistoryProps {
+  reload: boolean;
+}
+const BillingHistory: React.FC<BillingHistoryProps> = ({ reload }) => {
   const [subscriptionData, setSubscriptionData] = useState<BillingItem[]>([]);
 
   useEffect(() => {
@@ -29,7 +32,7 @@ const BillingHistory: React.FC = () => {
         }
       }
     }
-  }, [[], subscriptionData]);
+  }, [[], reload]);
 
   const billingData: BillingItem[] = [
     {

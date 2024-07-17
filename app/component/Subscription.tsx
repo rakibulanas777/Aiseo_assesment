@@ -11,7 +11,10 @@ interface Plan {
   buttonLabel: string;
   isPopular: boolean;
 }
-
+interface SubscriptionProps {
+  setReload: React.Dispatch<React.SetStateAction<boolean>>;
+  reload: boolean;
+}
 const plans: Plan[] = [
   {
     name: "Basic",
@@ -63,7 +66,7 @@ const plans: Plan[] = [
   },
 ];
 
-const Subscription: React.FC = () => {
+const Subscription: React.FC<SubscriptionProps> = ({ setReload, reload }) => {
   const [isAnnual, setIsAnnual] = useState(true);
 
   const handleToggle = () => {
@@ -78,19 +81,15 @@ const Subscription: React.FC = () => {
       priceAmount: isAnnual ? plan.annualPrice : plan.monthlyPrice,
     };
 
-    // Retrieve existing subscriptions from localStorage
     const existingSubscriptions = localStorage.getItem("subscriptionData");
     const subscriptions = existingSubscriptions
       ? JSON.parse(existingSubscriptions)
       : [];
 
-    // Add new subscription data to the array
     subscriptions.push(subscriptionData);
-
-    // Save updated array back to localStorage
     localStorage.setItem("subscriptionData", JSON.stringify(subscriptions));
-
     toast.success(`Subscribed to ${plan.name} plan!`);
+    setReload(true);
   };
 
   return (
