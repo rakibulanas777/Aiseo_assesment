@@ -1,7 +1,13 @@
 import React from "react";
 
-const BillingHistory = () => {
-  const billingData = [
+interface BillingItem {
+  date: string;
+  amount: string;
+  description: string;
+}
+
+const BillingHistory: React.FC = () => {
+  const billingData: BillingItem[] = [
     {
       date: "January 3, 2023",
       amount: "19$",
@@ -37,11 +43,14 @@ const BillingHistory = () => {
           </thead>
           <tbody>
             {billingData.map((item, index) => (
-              <tr key={index} className="border-b bg-[#394051] border-gray-800">
-                <td className="py-2 px-4">{item.date}</td>
-                <td className="py-2 px-4">{item.amount}</td>
-                <td className="py-2 px-4">{item.description}</td>
-                <td className="py-2 px-4 text-[#4ADE80]">
+              <tr
+                key={index}
+                className="border-b bg-[#394051]/20  backdrop-blur-md border-gray-800"
+              >
+                <td className="py-3 px-4">{item.date}</td>
+                <td className="py-3 px-4">{item.amount}</td>
+                <td className="py-3 px-4">{item.description}</td>
+                <td className="py-3 px-4 text-[#4ADE80]">
                   <a href="#">Download</a>
                 </td>
               </tr>

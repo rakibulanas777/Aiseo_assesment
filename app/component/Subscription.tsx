@@ -63,7 +63,7 @@ const plans: Plan[] = [
 ];
 
 const Subscription: React.FC = () => {
-  const [isAnnual, setIsAnnual] = useState(false);
+  const [isAnnual, setIsAnnual] = useState(true);
 
   const handleToggle = () => {
     setIsAnnual(!isAnnual);
@@ -95,17 +95,13 @@ const Subscription: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className="grid md:grid-cols-3 gap-4">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
         {plans.map((plan, index) => (
           <div
             key={index}
-            className={`p-6 rounded-lg border ${
-              plan.isPopular
-                ? "border-[#64748B] bg-[linear-gradient(to_bottom,#2F3241_100%,#0F172A_100%)]"
-                : "border-[#64748B] bg-[linear-gradient(to_bottom,#2F3241_100%,#0F172A_100%)]"
-            } relative`}
+            className={`p-6 rounded-lg border border-[#64748B] bg-gradient-to-b from-[#2F3241] to-[#0F172A]/70 backdrop-blur-md relative`}
           >
-            <div className="flex flex-col  justify-between">
+            <div className="flex flex-col h-full justify-between content-between">
               <div className="relative">
                 {plan.isPopular && (
                   <div className="absolute top-2 right-2 bg-[#14734C] text-white px-2 py-1 text-xs rounded-full">
