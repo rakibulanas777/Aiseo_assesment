@@ -1,6 +1,7 @@
 import Image from "next/image";
 import React from "react";
 import { IoIosArrowDown } from "react-icons/io";
+import { RiErrorWarningFill } from "react-icons/ri";
 
 const Details = () => {
   return (
@@ -99,9 +100,15 @@ const Details = () => {
                 <IoIosArrowDown size={16} className="!text-white" />
               </button>
             </div>
-            <div className="bg-[#334155] p-3 text-white rounded-md">
-              Looks like there's a past due! Click here to fix it up and
-              continue your journey with us.
+            <div className="bg-[#334155] p-3 flex gap-3  rounded-md">
+              <img src="/image/alert-circle.png" alt="" className="w-7 h-7" />
+              <div className="text-white text-sm">
+                Looks like there's a past due!{" "}
+                <a href="http://" className=" text-[#4ADE80] underline">
+                  Click here
+                </a>{" "}
+                to fix it up and continue your journey with us.
+              </div>
             </div>
           </div>
         </div>
