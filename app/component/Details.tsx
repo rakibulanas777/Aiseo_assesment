@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 
 const Details: React.FC = () => {
@@ -10,6 +10,45 @@ const Details: React.FC = () => {
     email: "robertfox@gmail.com",
     password: "Robert Fox",
   });
+  const [subscriptionData, setSubscriptionData] = useState({
+    plan: "Basic (500 Words Left)",
+    started: "",
+    nextBilling: "",
+  });
+
+  useEffect(() => {
+    const storedUserData = localStorage.getItem("userData");
+    if (storedUserData) {
+      setUserData(JSON.parse(storedUserData));
+    }
+
+    const storedSubscriptionData = localStorage.getItem("subscriptionData");
+    if (storedSubscriptionData) {
+      const parsedData = JSON.parse(storedSubscriptionData);
+
+      setSubscriptionData({
+        plan: `${parsedData[parsedData.length - 1].packageName} Plan`,
+        started: new Date(
+          parsedData[parsedData.length - 1].date
+        ).toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "short",
+          day: "2-digit",
+        }),
+        nextBilling: `${
+          parsedData[parsedData.length - 1].priceAmount
+        } on ${new Date(
+          parsedData[parsedData.length - 1].date
+        ).toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "short",
+          day: "2-digit",
+        })}`,
+      });
+    }
+  }, [[], subscriptionData]);
+
+  console.log(subscriptionData);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -24,6 +63,14 @@ const Details: React.FC = () => {
 
   const handleUpdateClick = () => {
     setIsEditing(false);
+  };
+  const getTodayDate = () => {
+    const options: Intl.DateTimeFormatOptions = {
+      year: "numeric",
+      month: "short",
+      day: "2-digit",
+    };
+    return new Date().toLocaleDateString("en-US", options);
   };
 
   return (
@@ -103,7 +150,7 @@ const Details: React.FC = () => {
                   Plan
                 </span>
                 <span className="text-sm lg:text-base border-0 outline-0 bg-transparent font-medium text-[white]">
-                  Basic (500 Words Left)
+                  {subscriptionData?.plan || "Basic"} (500 Words Left)
                 </span>
               </div>
               <div className="flex flex-col">
@@ -111,7 +158,7 @@ const Details: React.FC = () => {
                   Started
                 </span>
                 <span className="text-sm lg:text-base border-0 outline-0 bg-transparent font-medium text-[white]">
-                  Feb 13, 2024
+                  {subscriptionData?.started || "Jul 17, 2024"}
                 </span>
               </div>
               <div className="flex flex-col">
@@ -119,7 +166,7 @@ const Details: React.FC = () => {
                   Next Billing
                 </span>
                 <span className="text-sm lg:text-base border-0 outline-0 bg-transparent font-medium text-[white]">
-                  $95.00 on Mar 13, 2024
+                  {subscriptionData?.nextBilling || "$9.99/mo on Jul 17, 2024"}
                 </span>
               </div>
             </div>

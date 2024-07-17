@@ -1,9 +1,9 @@
 import BillingHistory from "@/app/component/BillingHistory";
-import Image from "next/image";
 import Subscription from "./component/Subscription";
 import Details from "./component/Details";
 import Navbar from "./shared/Navbar";
-
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 export default function Home() {
   return (
     <>
@@ -12,6 +12,7 @@ export default function Home() {
         <Details />
         <BillingHistory />
         <Subscription />
+        <ToastContainer />
       </div>
     </>
   );

@@ -1,6 +1,7 @@
 "use client";
-
 import React, { useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface Plan {
   name: string;
@@ -69,16 +70,37 @@ const Subscription: React.FC = () => {
     setIsAnnual(!isAnnual);
   };
 
+  const handleSubscriptionClick = (plan: Plan) => {
+    const today = new Date();
+    const subscriptionData = {
+      date: today.toISOString(),
+      packageName: plan.name,
+      priceAmount: isAnnual ? plan.annualPrice : plan.monthlyPrice,
+    };
+
+    // Retrieve existing subscriptions from localStorage
+    const existingSubscriptions = localStorage.getItem("subscriptionData");
+    const subscriptions = existingSubscriptions
+      ? JSON.parse(existingSubscriptions)
+      : [];
+
+    // Add new subscription data to the array
+    subscriptions.push(subscriptionData);
+
+    // Save updated array back to localStorage
+    localStorage.setItem("subscriptionData", JSON.stringify(subscriptions));
+
+    toast.success(`Subscribed to ${plan.name} plan!`);
+  };
+
   return (
     <div className=" text-white py-8">
       <div className="mb-6">
         <div className="text-xs font-base text-[#E2E8F0]">
           Upgrade your account
         </div>
-
         <div className="flex gap-4">
           <p>Save 20% with annual</p>
-
           <div className="relative inline-block w-10 mr-2 align-middle select-none">
             <input
               type="checkbox"
@@ -87,6 +109,7 @@ const Subscription: React.FC = () => {
               className="toggle-checkbox hidden"
               checked={isAnnual}
               onChange={handleToggle}
+              aria-label="Toggle annual billing"
             />
             <label
               htmlFor="toggle"
@@ -131,13 +154,17 @@ const Subscription: React.FC = () => {
                   ))}
                 </ul>
               </div>
-              <button className="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-lg transition duration-300">
+              <button
+                className="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-lg transition duration-300"
+                onClick={() => handleSubscriptionClick(plan)}
+              >
                 {plan.buttonLabel}
               </button>
             </div>
           </div>
         ))}
       </div>
+      <ToastContainer />
     </div>
   );
 };
